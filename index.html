@@ -11,62 +11,37 @@
         body { 
             font-family: 'Inter', sans-serif; 
             background: #f8fafc;
+            scroll-behavior: smooth;
         }
-        .slide {
-            width: 100vw;
-            height: 100vh;
-            display: none;
-            position: relative;
-            overflow: hidden;
-        }
-        .slide.active {
+        .section {
+            width: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+            padding: 4rem 2rem;
         }
-        .slide-content {
+        .section-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         .gradient-bg { 
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
         }
-        .slide-number {
+        .section-number {
             position: absolute;
-            bottom: 2rem;
+            top: 2rem;
             right: 2rem;
             background: rgba(0,0,0,0.1);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             color: white;
             font-size: 0.9rem;
-        }
-        .nav-controls {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            gap: 1rem;
-            background: rgba(255,255,255,0.9);
-            padding: 1rem;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .nav-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .nav-btn:hover {
-            transform: translateY(-2px);
         }
         .progress-bar { 
             transition: width 0.8s ease-in-out; 
@@ -76,30 +51,98 @@
             height: 300px;
             width: 100%;
         }
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            z-index: 1000;
+        }
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+        .floating-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background: #667eea;
+            transform: scale(1.3);
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
-    <!-- Slide 1: Title -->
-    <div class="slide active gradient-bg">
-        <div class="slide-content items-center justify-center text-center text-white">
-            <div class="mb-8">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+        <div class="nav-dot" onclick="scrollToSection(1)"></div>
+        <div class="nav-dot" onclick="scrollToSection(2)"></div>
+        <div class="nav-dot" onclick="scrollToSection(3)"></div>
+        <div class="nav-dot" onclick="scrollToSection(4)"></div>
+        <div class="nav-dot" onclick="scrollToSection(5)"></div>
+        <div class="nav-dot" onclick="scrollToSection(6)"></div>
+        <div class="nav-dot" onclick="scrollToSection(7)"></div>
+        <div class="nav-dot" onclick="scrollToSection(8)"></div>
+        <div class="nav-dot" onclick="scrollToSection(9)"></div>
+    </div>
+
+    <!-- Section 1: Title -->
+    <div class="section gradient-bg" id="section-0">
+        <div class="section-content items-center justify-center text-center text-white">
+            <div class="fade-in">
                 <h1 class="text-6xl font-bold mb-6">Báo cáo Dự án AI/DI</h1>
                 <h2 class="text-3xl font-light mb-8">Phòng Đảm bảo Chất lượng (DQA)</h2>
                 <div class="w-32 h-1 bg-white mx-auto mb-8 opacity-60"></div>
                 <p class="text-xl opacity-90">Tự động hóa quy trình tiếp nhận – thử nghiệm – trả báo cáo</p>
             </div>
-            <div class="text-lg opacity-75" id="currentDate"></div>
+            <div class="text-lg opacity-75 mt-8 fade-in" id="currentDate"></div>
         </div>
-        <div class="slide-number">1 / 7</div>
+        <div class="section-number">1 / 10</div>
     </div>
 
-    <!-- Slide 2: Tổng quan dự án -->
-    <div class="slide bg-white">
-        <div class="slide-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12">Tổng quan dự án</h1>
+    <!-- Section 2: Tổng quan dự án -->
+    <div class="section bg-white" id="section-1">
+        <div class="section-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 fade-in">Tổng quan dự án</h1>
             
-            <div class="grid grid-cols-2 gap-16 h-full">
-                <div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="fade-in">
                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">🎯 Mục tiêu</h2>
                     <ul class="space-y-4 text-xl text-gray-600">
                         <li class="flex items-center">
@@ -117,7 +160,7 @@
                     </ul>
                 </div>
                 
-                <div>
+                <div class="fade-in">
                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">📅 Thời gian</h2>
                     <div class="bg-gray-50 p-6 rounded-2xl">
                         <div class="text-lg mb-4">
@@ -137,36 +180,36 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">2 / 7</div>
+        <div class="section-number">2 / 10</div>
     </div>
 
-    <!-- Slide 3: KPI Dashboard -->
-    <div class="slide bg-gradient-to-br from-blue-50 to-purple-50">
-        <div class="slide-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Chỉ số hiệu suất chính</h1>
+    <!-- Section 3: KPI Dashboard -->
+    <div class="section bg-gradient-to-br from-blue-50 to-purple-50" id="section-2">
+        <div class="section-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center fade-in">Chỉ số hiệu suất chính</h1>
             
-            <div class="grid grid-cols-4 gap-8">
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
                     <div class="text-6xl mb-4">📊</div>
                     <div class="text-4xl font-bold text-blue-600 mb-2">75%</div>
                     <div class="text-lg text-gray-600">Tiến độ dự án</div>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
                     <div class="text-6xl mb-4">⚡</div>
                     <div class="text-4xl font-bold text-green-600 mb-2">30%</div>
                     <div class="text-lg text-gray-600">Giảm thời gian xử lý</div>
                     <div class="text-sm text-green-600 mt-2">✓ Đạt mục tiêu</div>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
                     <div class="text-6xl mb-4">🎯</div>
                     <div class="text-4xl font-bold text-purple-600 mb-2">92%</div>
                     <div class="text-lg text-gray-600">Độ chính xác AI</div>
                     <div class="text-sm text-purple-600 mt-2">✓ Vượt mục tiêu</div>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
                     <div class="text-6xl mb-4">⚠️</div>
                     <div class="text-4xl font-bold text-orange-600 mb-2">5</div>
                     <div class="text-lg text-gray-600">Vấn đề tồn đọng</div>
@@ -174,16 +217,16 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">3 / 7</div>
+        <div class="section-number">3 / 10</div>
     </div>
 
-    <!-- Slide 4: Timeline -->
-    <div class="slide bg-white">
-        <div class="slide-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12">Tiến độ theo giai đoạn</h1>
+    <!-- Section 4: Timeline -->
+    <div class="section bg-white" id="section-3">
+        <div class="section-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 fade-in">Tiến độ theo giai đoạn</h1>
             
             <div class="space-y-8">
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-6 fade-in">
                     <div class="w-8 h-8 bg-green-500 rounded-full flex-shrink-0 flex items-center justify-center">
                         <span class="text-white font-bold">✓</span>
                     </div>
@@ -196,7 +239,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-6 fade-in">
                     <div class="w-8 h-8 bg-green-500 rounded-full flex-shrink-0 flex items-center justify-center">
                         <span class="text-white font-bold">✓</span>
                     </div>
@@ -210,7 +253,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-6 fade-in">
                     <div class="w-8 h-8 bg-blue-500 rounded-full flex-shrink-0 flex items-center justify-center">
                         <span class="text-white font-bold">→</span>
                     </div>
@@ -223,7 +266,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-6 fade-in">
                     <div class="w-8 h-8 bg-gray-300 rounded-full flex-shrink-0"></div>
                     <div class="flex-1">
                         <h3 class="text-2xl font-semibold text-gray-800">Kết nối hệ thống</h3>
@@ -235,16 +278,16 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">4 / 7</div>
+        <div class="section-number">4 / 10</div>
     </div>
 
-    <!-- Slide 5: Module Status -->
-    <div class="slide bg-gradient-to-br from-gray-50 to-blue-50">
-        <div class="slide-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Trạng thái 3 Module AI/DI</h1>
+    <!-- Section 5: Module Status -->
+    <div class="section bg-gradient-to-br from-gray-50 to-blue-50" id="section-4">
+        <div class="section-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center fade-in">Trạng thái 3 Module AI/DI</h1>
             
-            <div class="grid grid-cols-3 gap-12">
-                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500 fade-in">
                     <div class="text-center mb-6">
                         <div class="text-5xl mb-4">🤖</div>
                         <h3 class="text-2xl font-bold text-gray-800">Module 1</h3>
@@ -262,7 +305,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-orange-500">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-orange-500 fade-in">
                     <div class="text-center mb-6">
                         <div class="text-5xl mb-4">⚙️</div>
                         <h3 class="text-2xl font-bold text-gray-800">Module 2</h3>
@@ -280,7 +323,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500 fade-in">
                     <div class="text-center mb-6">
                         <div class="text-5xl mb-4">📊</div>
                         <h3 class="text-2xl font-bold text-gray-800">Module 3</h3>
@@ -299,20 +342,20 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">5 / 7</div>
+        <div class="section-number">5 / 10</div>
     </div>
 
-    <!-- Slide 6: Module 1 Detail -->
-    <div class="slide bg-gradient-to-br from-green-50 to-emerald-50">
-        <div class="slide-content">
-            <div class="text-center mb-8">
+    <!-- Section 6: Module 1 Detail -->
+    <div class="section bg-gradient-to-br from-green-50 to-emerald-50" id="section-5">
+        <div class="section-content">
+            <div class="text-center mb-8 fade-in">
                 <div class="text-8xl mb-4">🤖</div>
                 <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 1: Phân loại tự động</h1>
                 <div class="w-32 h-1 bg-green-500 mx-auto"></div>
             </div>
             
-            <div class="grid grid-cols-2 gap-16">
-                <div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
                     <ul class="space-y-4 text-xl text-gray-700">
                         <li class="flex items-start">
@@ -345,7 +388,7 @@
                     </div>
                 </div>
                 
-                <div>
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-xl shadow-md">
@@ -370,20 +413,20 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">6 / 10</div>
+        <div class="section-number">6 / 10</div>
     </div>
 
-    <!-- Slide 7: Module 2 Detail -->
-    <div class="slide bg-gradient-to-br from-orange-50 to-amber-50">
-        <div class="slide-content">
-            <div class="text-center mb-8">
+    <!-- Section 7: Module 2 Detail -->
+    <div class="section bg-gradient-to-br from-orange-50 to-amber-50" id="section-6">
+        <div class="section-content">
+            <div class="text-center mb-8 fade-in">
                 <div class="text-8xl mb-4">⚙️</div>
                 <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 2: Giao việc tự động</h1>
                 <div class="w-32 h-1 bg-orange-500 mx-auto"></div>
             </div>
             
-            <div class="grid grid-cols-2 gap-16">
-                <div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
                     <ul class="space-y-4 text-xl text-gray-700">
                         <li class="flex items-start">
@@ -417,7 +460,7 @@
                     </div>
                 </div>
                 
-                <div>
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-xl shadow-md">
@@ -445,20 +488,20 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">7 / 10</div>
+        <div class="section-number">7 / 10</div>
     </div>
 
-    <!-- Slide 8: Module 3 Detail -->
-    <div class="slide bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div class="slide-content">
-            <div class="text-center mb-8">
+    <!-- Section 8: Module 3 Detail -->
+    <div class="section bg-gradient-to-br from-blue-50 to-indigo-50" id="section-7">
+        <div class="section-content">
+            <div class="text-center mb-8 fade-in">
                 <div class="text-8xl mb-4">📊</div>
                 <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 3: Báo cáo thông minh</h1>
                 <div class="w-32 h-1 bg-blue-500 mx-auto"></div>
             </div>
             
-            <div class="grid grid-cols-2 gap-16">
-                <div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
                     <ul class="space-y-4 text-xl text-gray-700">
                         <li class="flex items-start">
@@ -492,7 +535,7 @@
                     </div>
                 </div>
                 
-                <div>
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-xl shadow-md">
@@ -520,23 +563,23 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">8 / 10</div>
+        <div class="section-number">8 / 10</div>
     </div>
 
-    <!-- Slide 9: Charts -->
-    <div class="slide bg-white">
-        <div class="slide-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Phân tích hiệu suất</h1>
+    <!-- Section 9: Charts -->
+    <div class="section bg-white" id="section-8">
+        <div class="section-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center fade-in">Phân tích hiệu suất</h1>
             
-            <div class="grid grid-cols-2 gap-16 h-full">
-                <div class="bg-gray-50 rounded-3xl p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="bg-gray-50 rounded-3xl p-8 fade-in">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Hiệu suất xử lý theo tuần</h3>
                     <div class="chart-container">
                         <canvas id="performanceChart"></canvas>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 rounded-3xl p-8">
+                <div class="bg-gray-50 rounded-3xl p-8 fade-in">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Phân bố trạng thái báo cáo</h3>
                     <div class="chart-container">
                         <canvas id="statusChart"></canvas>
@@ -544,16 +587,16 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">9 / 10</div>
+        <div class="section-number">9 / 10</div>
     </div>
 
-    <!-- Slide 10: Kết luận -->
-    <div class="slide gradient-bg">
-        <div class="slide-content text-white">
-            <h1 class="text-5xl font-bold mb-12 text-center">Kết luận & Hướng phát triển</h1>
+    <!-- Section 10: Kết luận -->
+    <div class="section gradient-bg" id="section-9">
+        <div class="section-content text-white">
+            <h1 class="text-5xl font-bold mb-12 text-center fade-in">Kết luận & Hướng phát triển</h1>
             
-            <div class="grid grid-cols-2 gap-16">
-                <div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold mb-8">🎉 Thành tựu đạt được</h2>
                     <ul class="space-y-4 text-xl">
                         <li class="flex items-center">
@@ -575,7 +618,7 @@
                     </ul>
                 </div>
                 
-                <div>
+                <div class="fade-in">
                     <h2 class="text-3xl font-semibold mb-8">🚀 Bước tiếp theo</h2>
                     <ul class="space-y-4 text-xl">
                         <li class="flex items-center">
@@ -598,25 +641,14 @@
                 </div>
             </div>
             
-            <div class="text-center mt-16">
+            <div class="text-center mt-16 fade-in">
                 <p class="text-2xl font-light opacity-90">Cảm ơn sự quan tâm!</p>
             </div>
         </div>
-        <div class="slide-number">10 / 10</div>
-    </div>
-
-    <!-- Navigation Controls -->
-    <div class="nav-controls">
-        <button class="nav-btn bg-gray-200 text-gray-700 hover:bg-gray-300" onclick="previousSlide()">← Trước</button>
-        <button class="nav-btn bg-blue-600 text-white hover:bg-blue-700" onclick="nextSlide()">Tiếp →</button>
-        <button class="nav-btn bg-green-600 text-white hover:bg-green-700" onclick="toggleFullscreen()">⛶ Toàn màn hình</button>
+        <div class="section-number">10 / 10</div>
     </div>
 
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-
         // Update current date
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('vi-VN', {
             weekday: 'long',
@@ -625,50 +657,57 @@
             day: 'numeric'
         });
 
-        function showSlide(n) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (n + totalSlides) % totalSlides;
-            slides[currentSlide].classList.add('active');
+        // Scroll progress
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+        }
+
+        // Navigation dots
+        function updateNavDots() {
+            const sections = document.querySelectorAll('.section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            const scrollTop = window.pageYOffset + window.innerHeight / 2;
+
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollTop >= sectionTop && scrollTop < sectionBottom) {
+                    navDots.forEach(dot => dot.classList.remove('active'));
+                    navDots[index].classList.add('active');
+                }
+            });
+        }
+
+        // Scroll to section
+        function scrollToSection(index) {
+            const section = document.getElementById(`section-${index}`);
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fade in animation
+        function handleFadeIn() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const windowHeight = window.innerHeight;
             
-            // Initialize charts when showing chart slide
-            if (currentSlide === 8) {
-                setTimeout(initCharts, 100);
-            }
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
         }
 
-        function nextSlide() {
-            showSlide(currentSlide + 1);
-        }
-
-        function previousSlide() {
-            showSlide(currentSlide - 1);
-        }
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                previousSlide();
-            } else if (e.key === 'F11') {
-                e.preventDefault();
-                toggleFullscreen();
-            }
-        });
-
+        // Initialize charts
         function initCharts() {
             // Performance Chart
             const performanceCtx = document.getElementById('performanceChart');
-            if (performanceCtx) {
-                new Chart(performanceCtx, {
+            if (performanceCtx && !performanceCtx.chart) {
+                performanceCtx.chart = new Chart(performanceCtx, {
                     type: 'line',
                     data: {
                         labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4', 'Tuần 5'],
@@ -719,8 +758,8 @@
 
             // Status Chart
             const statusCtx = document.getElementById('statusChart');
-            if (statusCtx) {
-                new Chart(statusCtx, {
+            if (statusCtx && !statusCtx.chart) {
+                statusCtx.chart = new Chart(statusCtx, {
                     type: 'doughnut',
                     data: {
                         labels: ['OK', 'NG', 'Đang xử lý'],
@@ -751,8 +790,22 @@
             }
         }
 
-        // Auto-advance slides (optional)
-        // setInterval(nextSlide, 10000); // Uncomment for auto-advance every 10 seconds
+        // Event listeners
+        window.addEventListener('scroll', () => {
+            updateScrollProgress();
+            updateNavDots();
+            handleFadeIn();
+        });
+
+        window.addEventListener('load', () => {
+            handleFadeIn();
+            setTimeout(initCharts, 1000);
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleFadeIn();
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979aada5f27d1fbc',t:'MTc1Njk1OTQ1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979ac1df47371fbc',t:'MTc1Njk2MDI4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
