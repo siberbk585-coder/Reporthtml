@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo Dự án AI/DI - Phòng DQA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f8fafc;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+        }
+        .gradient-bg { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+        .slide-number {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(0,0,0,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .nav-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+            background: rgba(255,255,255,0.9);
+            padding: 1rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+        .progress-bar { 
+            transition: width 0.8s ease-in-out; 
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide active gradient-bg">
+        <div class="slide-content items-center justify-center text-center text-white">
+            <div class="mb-8">
+                <h1 class="text-6xl font-bold mb-6">Báo cáo Dự án AI/DI</h1>
+                <h2 class="text-3xl font-light mb-8">Phòng Đảm bảo Chất lượng (DQA)</h2>
+                <div class="w-32 h-1 bg-white mx-auto mb-8 opacity-60"></div>
+                <p class="text-xl opacity-90">Tự động hóa quy trình tiếp nhận – thử nghiệm – trả báo cáo</p>
+            </div>
+            <div class="text-lg opacity-75" id="currentDate"></div>
+        </div>
+        <div class="slide-number">1 / 7</div>
+    </div>
+
+    <!-- Slide 2: Tổng quan dự án -->
+    <div class="slide bg-white">
+        <div class="slide-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12">Tổng quan dự án</h1>
+            
+            <div class="grid grid-cols-2 gap-16 h-full">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">🎯 Mục tiêu</h2>
+                    <ul class="space-y-4 text-xl text-gray-600">
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 bg-blue-500 rounded-full mr-4"></span>
+                            Giảm 30% thời gian xử lý tác vụ
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 bg-green-500 rounded-full mr-4"></span>
+                            Đạt >90% độ chính xác phân loại
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 bg-purple-500 rounded-full mr-4"></span>
+                            Dashboard real-time cho quản lý
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">📅 Thời gian</h2>
+                    <div class="bg-gray-50 p-6 rounded-2xl">
+                        <div class="text-lg mb-4">
+                            <span class="font-semibold">Bắt đầu:</span> 19/07/2025
+                        </div>
+                        <div class="text-lg mb-4">
+                            <span class="font-semibold">Kết thúc:</span> 31/12/2025
+                        </div>
+                        <div class="text-lg mb-6">
+                            <span class="font-semibold">Tổng thời gian:</span> ~5,5 tháng
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-4">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-4 rounded-full progress-bar" style="width: 75%"></div>
+                        </div>
+                        <p class="text-center mt-2 font-semibold text-gray-700">75% hoàn thành</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">2 / 7</div>
+    </div>
+
+    <!-- Slide 3: KPI Dashboard -->
+    <div class="slide bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="slide-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Chỉ số hiệu suất chính</h1>
+            
+            <div class="grid grid-cols-4 gap-8">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                    <div class="text-6xl mb-4">📊</div>
+                    <div class="text-4xl font-bold text-blue-600 mb-2">75%</div>
+                    <div class="text-lg text-gray-600">Tiến độ dự án</div>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                    <div class="text-6xl mb-4">⚡</div>
+                    <div class="text-4xl font-bold text-green-600 mb-2">30%</div>
+                    <div class="text-lg text-gray-600">Giảm thời gian xử lý</div>
+                    <div class="text-sm text-green-600 mt-2">✓ Đạt mục tiêu</div>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <div class="text-4xl font-bold text-purple-600 mb-2">92%</div>
+                    <div class="text-lg text-gray-600">Độ chính xác AI</div>
+                    <div class="text-sm text-purple-600 mt-2">✓ Vượt mục tiêu</div>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
+                    <div class="text-6xl mb-4">⚠️</div>
+                    <div class="text-4xl font-bold text-orange-600 mb-2">5</div>
+                    <div class="text-lg text-gray-600">Vấn đề tồn đọng</div>
+                    <div class="text-sm text-orange-600 mt-2">Đang xử lý</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">3 / 7</div>
+    </div>
+
+    <!-- Slide 4: Timeline -->
+    <div class="slide bg-white">
+        <div class="slide-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12">Tiến độ theo giai đoạn</h1>
+            
+            <div class="space-y-8">
+                <div class="flex items-center space-x-6">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex-shrink-0 flex items-center justify-center">
+                        <span class="text-white font-bold">✓</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-semibold text-gray-800">Xác định chức năng</h3>
+                        <p class="text-lg text-gray-600">19/07 - Hoàn thành</p>
+                        <div class="mt-3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex-shrink-0 flex items-center justify-center">
+                        <span class="text-white font-bold">✓</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-semibold text-gray-800">Thử nghiệm & kiểm chứng</h3>
+                        <p class="text-lg text-gray-600">20/07 - 31/08 - Đã thực hiện</p>
+                        <p class="text-base text-green-600 font-medium">✓ Đã đưa module 1 & 3 chạy thực tế</p>
+                        <div class="mt-3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex-shrink-0 flex items-center justify-center">
+                        <span class="text-white font-bold">→</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-semibold text-gray-800">Điều chỉnh & mở rộng</h3>
+                        <p class="text-lg text-gray-600">01/09 - 15/09 - Sắp tới</p>
+                        <div class="mt-3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-500 h-3 rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <div class="w-8 h-8 bg-gray-300 rounded-full flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-semibold text-gray-800">Kết nối hệ thống</h3>
+                        <p class="text-lg text-gray-600">16/09 - 31/10</p>
+                        <div class="mt-3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-gray-300 h-3 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">4 / 7</div>
+    </div>
+
+    <!-- Slide 5: Module Status -->
+    <div class="slide bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="slide-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Trạng thái 3 Module AI/DI</h1>
+            
+            <div class="grid grid-cols-3 gap-12">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500">
+                    <div class="text-center mb-6">
+                        <div class="text-5xl mb-4">🤖</div>
+                        <h3 class="text-2xl font-bold text-gray-800">Module 1</h3>
+                        <p class="text-lg text-gray-600">Phân loại tự động</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-lg font-semibold">Hoạt động</span>
+                        <div class="mt-4">
+                            <div class="text-3xl font-bold text-green-600">94%</div>
+                            <div class="text-sm text-gray-600">Độ chính xác</div>
+                        </div>
+                        <div class="mt-4 bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-orange-500">
+                    <div class="text-center mb-6">
+                        <div class="text-5xl mb-4">⚙️</div>
+                        <h3 class="text-2xl font-bold text-gray-800">Module 2</h3>
+                        <p class="text-lg text-gray-600">Giao việc tự động</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-lg font-semibold">Thử nghiệm</span>
+                        <div class="mt-4">
+                            <div class="text-3xl font-bold text-orange-600">85%</div>
+                            <div class="text-sm text-gray-600">Độ chính xác</div>
+                        </div>
+                        <div class="mt-4 bg-gray-200 rounded-full h-3">
+                            <div class="bg-orange-500 h-3 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500">
+                    <div class="text-center mb-6">
+                        <div class="text-5xl mb-4">📊</div>
+                        <h3 class="text-2xl font-bold text-gray-800">Module 3</h3>
+                        <p class="text-lg text-gray-600">Báo cáo thông minh</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-lg font-semibold">Hoạt động</span>
+                        <div class="mt-4">
+                            <div class="text-3xl font-bold text-green-600">87%</div>
+                            <div class="text-sm text-gray-600">Độ chính xác</div>
+                        </div>
+                        <div class="mt-4 bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 87%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">5 / 7</div>
+    </div>
+
+    <!-- Slide 6: Module 1 Detail -->
+    <div class="slide bg-gradient-to-br from-green-50 to-emerald-50">
+        <div class="slide-content">
+            <div class="text-center mb-8">
+                <div class="text-8xl mb-4">🤖</div>
+                <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 1: Phân loại tự động</h1>
+                <div class="w-32 h-1 bg-green-500 mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
+                    <ul class="space-y-4 text-xl text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-green-500 text-2xl mr-4">•</span>
+                            <span>Tự động phân loại yêu cầu thử nghiệm theo loại sản phẩm</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 text-2xl mr-4">•</span>
+                            <span>Nhận diện và gán mã tiêu chuẩn phù hợp</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 text-2xl mr-4">•</span>
+                            <span>Xác định phương pháp thử nghiệm tối ưu</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 text-2xl mr-4">•</span>
+                            <span>Ước tính thời gian và chi phí thử nghiệm</span>
+                        </li>
+                    </ul>
+
+                    <div class="mt-8 p-6 bg-white rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">📊 Hiệu suất</h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-600">Độ chính xác</span>
+                            <span class="text-2xl font-bold text-green-600">94%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Machine Learning</h4>
+                            <p class="text-gray-600">Thuật toán phân loại văn bản với NLP</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">OCR Technology</h4>
+                            <p class="text-gray-600">Nhận diện và trích xuất thông tin từ tài liệu</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Rule Engine</h4>
+                            <p class="text-gray-600">Áp dụng quy tắc nghiệp vụ tự động</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-6 bg-green-100 rounded-2xl border-l-4 border-green-500">
+                        <h3 class="text-xl font-semibold text-green-800 mb-2">✅ Trạng thái</h3>
+                        <p class="text-green-700 text-lg font-medium">Đang hoạt động ổn định</p>
+                        <p class="text-green-600 text-sm mt-1">Đã xử lý 1,247 yêu cầu trong tháng 8</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">6 / 10</div>
+    </div>
+
+    <!-- Slide 7: Module 2 Detail -->
+    <div class="slide bg-gradient-to-br from-orange-50 to-amber-50">
+        <div class="slide-content">
+            <div class="text-center mb-8">
+                <div class="text-8xl mb-4">⚙️</div>
+                <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 2: Giao việc tự động</h1>
+                <div class="w-32 h-1 bg-orange-500 mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
+                    <ul class="space-y-4 text-xl text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-orange-500 text-2xl mr-4">•</span>
+                            <span>Tự động phân công nhiệm vụ cho kỹ thuật viên</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 text-2xl mr-4">•</span>
+                            <span>Cân bằng khối lượng công việc theo năng lực</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 text-2xl mr-4">•</span>
+                            <span>Lập lịch thử nghiệm tối ưu theo thiết bị</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 text-2xl mr-4">•</span>
+                            <span>Theo dõi tiến độ và cảnh báo trễ hạn</span>
+                        </li>
+                    </ul>
+
+                    <div class="mt-8 p-6 bg-white rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">📊 Hiệu suất</h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-600">Độ chính xác</span>
+                            <span class="text-2xl font-bold text-orange-600">85%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-3">
+                            <div class="bg-orange-500 h-3 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Đang cải thiện thuật toán phân công</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Optimization Algorithm</h4>
+                            <p class="text-gray-600">Thuật toán tối ưu hóa phân công tài nguyên</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Calendar Integration</h4>
+                            <p class="text-gray-600">Tích hợp lịch làm việc và thiết bị</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Real-time Monitoring</h4>
+                            <p class="text-gray-600">Giám sát tiến độ thời gian thực</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-6 bg-orange-100 rounded-2xl border-l-4 border-orange-500">
+                        <h3 class="text-xl font-semibold text-orange-800 mb-2">🔄 Trạng thái</h3>
+                        <p class="text-orange-700 text-lg font-medium">Đang thử nghiệm</p>
+                        <p class="text-orange-600 text-sm mt-1">Cần điều chỉnh thuật toán phân công</p>
+                        <div class="mt-3">
+                            <span class="text-xs bg-orange-200 text-orange-800 px-2 py-1 rounded-full">Mục tiêu: 90% độ chính xác</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">7 / 10</div>
+    </div>
+
+    <!-- Slide 8: Module 3 Detail -->
+    <div class="slide bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="slide-content">
+            <div class="text-center mb-8">
+                <div class="text-8xl mb-4">📊</div>
+                <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 3: Báo cáo thông minh</h1>
+                <div class="w-32 h-1 bg-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
+                    <ul class="space-y-4 text-xl text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 text-2xl mr-4">•</span>
+                            <span>Tự động tạo báo cáo kết quả thử nghiệm</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 text-2xl mr-4">•</span>
+                            <span>Phân tích dữ liệu và đưa ra kết luận</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 text-2xl mr-4">•</span>
+                            <span>Tạo biểu đồ và visualization tự động</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 text-2xl mr-4">•</span>
+                            <span>Gửi báo cáo theo định dạng yêu cầu</span>
+                        </li>
+                    </ul>
+
+                    <div class="mt-8 p-6 bg-white rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">📊 Hiệu suất</h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-600">Độ chính xác</span>
+                            <span class="text-2xl font-bold text-blue-600">87%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-500 h-3 rounded-full" style="width: 87%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Giảm 60% thời gian tạo báo cáo</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Data Analytics</h4>
+                            <p class="text-gray-600">Phân tích thống kê và xu hướng dữ liệu</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Template Engine</h4>
+                            <p class="text-gray-600">Tạo báo cáo theo mẫu chuẩn</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md">
+                            <h4 class="font-semibold text-gray-800">Chart Generation</h4>
+                            <p class="text-gray-600">Tự động tạo biểu đồ và hình ảnh</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-6 bg-blue-100 rounded-2xl border-l-4 border-blue-500">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-2">✅ Trạng thái</h3>
+                        <p class="text-blue-700 text-lg font-medium">Đang hoạt động ổn định</p>
+                        <p class="text-blue-600 text-sm mt-1">Đã tạo 892 báo cáo tự động trong tháng 8</p>
+                        <div class="mt-3">
+                            <span class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">Tiết kiệm 45 giờ/tuần</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">8 / 10</div>
+    </div>
+
+    <!-- Slide 9: Charts -->
+    <div class="slide bg-white">
+        <div class="slide-content">
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Phân tích hiệu suất</h1>
+            
+            <div class="grid grid-cols-2 gap-16 h-full">
+                <div class="bg-gray-50 rounded-3xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Hiệu suất xử lý theo tuần</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-3xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Phân bố trạng thái báo cáo</h3>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">9 / 10</div>
+    </div>
+
+    <!-- Slide 10: Kết luận -->
+    <div class="slide gradient-bg">
+        <div class="slide-content text-white">
+            <h1 class="text-5xl font-bold mb-12 text-center">Kết luận & Hướng phát triển</h1>
+            
+            <div class="grid grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl font-semibold mb-8">🎉 Thành tựu đạt được</h2>
+                    <ul class="space-y-4 text-xl">
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">✅</span>
+                            Giảm 30% thời gian xử lý
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">✅</span>
+                            Độ chính xác AI đạt 92%
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">✅</span>
+                            2/3 module đã chạy thực tế
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">✅</span>
+                            Dashboard real-time hoạt động
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl font-semibold mb-8">🚀 Bước tiếp theo</h2>
+                    <ul class="space-y-4 text-xl">
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">🔄</span>
+                            Hoàn tất kết nối hệ thống
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">📋</span>
+                            Chuẩn hóa tài liệu vận hành
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">📈</span>
+                            Mở rộng sang bộ phận khác
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-2xl mr-4">🎓</span>
+                            Đào tạo toàn diện nhân sự
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <p class="text-2xl font-light opacity-90">Cảm ơn sự quan tâm!</p>
+            </div>
+        </div>
+        <div class="slide-number">10 / 10</div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn bg-gray-200 text-gray-700 hover:bg-gray-300" onclick="previousSlide()">← Trước</button>
+        <button class="nav-btn bg-blue-600 text-white hover:bg-blue-700" onclick="nextSlide()">Tiếp →</button>
+        <button class="nav-btn bg-green-600 text-white hover:bg-green-700" onclick="toggleFullscreen()">⛶ Toàn màn hình</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // Update current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('vi-VN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Initialize charts when showing chart slide
+            if (currentSlide === 8) {
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'F11') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+
+        function initCharts() {
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart');
+            if (performanceCtx) {
+                new Chart(performanceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4', 'Tuần 5'],
+                        datasets: [{
+                            label: 'Thời gian xử lý (giờ)',
+                            data: [8.5, 7.2, 6.8, 6.1, 5.9],
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 3,
+                            pointRadius: 6,
+                            pointBackgroundColor: '#3B82F6'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Giờ',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Status Chart
+            const statusCtx = document.getElementById('statusChart');
+            if (statusCtx) {
+                new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['OK', 'NG', 'Đang xử lý'],
+                        datasets: [{
+                            data: [92, 5, 3],
+                            backgroundColor: ['#10B981', '#EF4444', '#F59E0B'],
+                            borderWidth: 0,
+                            cutout: '60%'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Auto-advance slides (optional)
+        // setInterval(nextSlide, 10000); // Uncomment for auto-advance every 10 seconds
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979aada5f27d1fbc',t:'MTc1Njk1OTQ1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
