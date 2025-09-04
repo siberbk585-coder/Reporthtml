@@ -91,15 +91,7 @@
             background: #667eea;
             transform: scale(1.3);
         }
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+
     </style>
 </head>
 <body>
@@ -125,13 +117,13 @@
     <!-- Section 1: Title -->
     <div class="section gradient-bg" id="section-0">
         <div class="section-content items-center justify-center text-center text-white">
-            <div class="fade-in">
+            <div>
                 <h1 class="text-6xl font-bold mb-6">Báo cáo Dự án AI/DI</h1>
                 <h2 class="text-3xl font-light mb-8">Phòng Đảm bảo Chất lượng (DQA)</h2>
                 <div class="w-32 h-1 bg-white mx-auto mb-8 opacity-60"></div>
                 <p class="text-xl opacity-90">Tự động hóa quy trình tiếp nhận – thử nghiệm – trả báo cáo</p>
             </div>
-            <div class="text-lg opacity-75 mt-8 fade-in" id="currentDate"></div>
+            <div class="text-lg opacity-75 mt-8" id="currentDate"></div>
         </div>
         <div class="section-number">1 / 10</div>
     </div>
@@ -139,10 +131,10 @@
     <!-- Section 2: Tổng quan dự án -->
     <div class="section bg-white" id="section-1">
         <div class="section-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 fade-in">Tổng quan dự án</h1>
+            <h1 class="text-5xl font-bold text-gray-800 mb-12">Tổng quan dự án</h1>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="fade-in">
+                <div>
                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">🎯 Mục tiêu</h2>
                     <ul class="space-y-4 text-xl text-gray-600">
                         <li class="flex items-center">
@@ -160,7 +152,7 @@
                     </ul>
                 </div>
                 
-                <div class="fade-in">
+                <div>
                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">📅 Thời gian</h2>
                     <div class="bg-gray-50 p-6 rounded-2xl">
                         <div class="text-lg mb-4">
@@ -186,30 +178,30 @@
     <!-- Section 3: KPI Dashboard -->
     <div class="section bg-gradient-to-br from-blue-50 to-purple-50" id="section-2">
         <div class="section-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center fade-in">Chỉ số hiệu suất chính</h1>
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Chỉ số hiệu suất chính</h1>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
                     <div class="text-6xl mb-4">📊</div>
                     <div class="text-4xl font-bold text-blue-600 mb-2">75%</div>
                     <div class="text-lg text-gray-600">Tiến độ dự án</div>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
                     <div class="text-6xl mb-4">⚡</div>
                     <div class="text-4xl font-bold text-green-600 mb-2">30%</div>
                     <div class="text-lg text-gray-600">Giảm thời gian xử lý</div>
                     <div class="text-sm text-green-600 mt-2">✓ Đạt mục tiêu</div>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
                     <div class="text-6xl mb-4">🎯</div>
                     <div class="text-4xl font-bold text-purple-600 mb-2">92%</div>
                     <div class="text-lg text-gray-600">Độ chính xác AI</div>
                     <div class="text-sm text-purple-600 mt-2">✓ Vượt mục tiêu</div>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-8 text-center shadow-xl fade-in">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-xl">
                     <div class="text-6xl mb-4">⚠️</div>
                     <div class="text-4xl font-bold text-orange-600 mb-2">5</div>
                     <div class="text-lg text-gray-600">Vấn đề tồn đọng</div>
@@ -223,10 +215,10 @@
     <!-- Section 4: Timeline -->
     <div class="section bg-white" id="section-3">
         <div class="section-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 fade-in">Tiến độ theo giai đoạn</h1>
+            <h1 class="text-5xl font-bold text-gray-800 mb-12">Tiến độ theo giai đoạn</h1>
             
             <div class="space-y-8">
-                <div class="flex items-center space-x-6 fade-in">
+                <div class="flex items-center space-x-6">
                     <div class="w-8 h-8 bg-green-500 rounded-full flex-shrink-0 flex items-center justify-center">
                         <span class="text-white font-bold">✓</span>
                     </div>
@@ -239,7 +231,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-6 fade-in">
+                <div class="flex items-center space-x-6">
                     <div class="w-8 h-8 bg-green-500 rounded-full flex-shrink-0 flex items-center justify-center">
                         <span class="text-white font-bold">✓</span>
                     </div>
@@ -253,7 +245,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-6 fade-in">
+                <div class="flex items-center space-x-6">
                     <div class="w-8 h-8 bg-blue-500 rounded-full flex-shrink-0 flex items-center justify-center">
                         <span class="text-white font-bold">→</span>
                     </div>
@@ -266,7 +258,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-6 fade-in">
+                <div class="flex items-center space-x-6">
                     <div class="w-8 h-8 bg-gray-300 rounded-full flex-shrink-0"></div>
                     <div class="flex-1">
                         <h3 class="text-2xl font-semibold text-gray-800">Kết nối hệ thống</h3>
@@ -284,10 +276,10 @@
     <!-- Section 5: Module Status -->
     <div class="section bg-gradient-to-br from-gray-50 to-blue-50" id="section-4">
         <div class="section-content">
-            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center fade-in">Trạng thái 3 Module AI/DI</h1>
+            <h1 class="text-5xl font-bold text-gray-800 mb-12 text-center">Trạng thái 3 Module AI/DI</h1>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500 fade-in">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500">
                     <div class="text-center mb-6">
                         <div class="text-5xl mb-4">🤖</div>
                         <h3 class="text-2xl font-bold text-gray-800">Module 1</h3>
@@ -305,7 +297,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-orange-500 fade-in">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-orange-500">
                     <div class="text-center mb-6">
                         <div class="text-5xl mb-4">⚙️</div>
                         <h3 class="text-2xl font-bold text-gray-800">Module 2</h3>
@@ -323,7 +315,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500 fade-in">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border-l-8 border-green-500">
                     <div class="text-center mb-6">
                         <div class="text-5xl mb-4">📊</div>
                         <h3 class="text-2xl font-bold text-gray-800">Module 3</h3>
@@ -348,14 +340,14 @@
     <!-- Section 6: Module 1 Detail -->
     <div class="section bg-gradient-to-br from-green-50 to-emerald-50" id="section-5">
         <div class="section-content">
-            <div class="text-center mb-8 fade-in">
+            <div class="text-center mb-8">
                 <div class="text-8xl mb-4">🤖</div>
                 <h1 class="text-5xl font-bold text-gray-800 mb-4">Module 1: Phân loại tự động</h1>
                 <div class="w-32 h-1 bg-green-500 mx-auto"></div>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="fade-in">
+                <div>
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
                     <ul class="space-y-4 text-xl text-gray-700">
                         <li class="flex items-start">
@@ -388,7 +380,7 @@
                     </div>
                 </div>
                 
-                <div class="fade-in">
+                <div>
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-xl shadow-md">
@@ -426,7 +418,7 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="fade-in">
+                <div >
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
                     <ul class="space-y-4 text-xl text-gray-700">
                         <li class="flex items-start">
@@ -460,7 +452,7 @@
                     </div>
                 </div>
                 
-                <div class="fade-in">
+                <div >
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-xl shadow-md">
@@ -501,7 +493,7 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="fade-in">
+                <div >
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">🎯 Chức năng chính</h2>
                     <ul class="space-y-4 text-xl text-gray-700">
                         <li class="flex items-start">
@@ -535,7 +527,7 @@
                     </div>
                 </div>
                 
-                <div class="fade-in">
+                <div >
                     <h2 class="text-3xl font-semibold text-gray-800 mb-6">⚙️ Công nghệ sử dụng</h2>
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-xl shadow-md">
@@ -596,7 +588,7 @@
             <h1 class="text-5xl font-bold mb-12 text-center fade-in">Kết luận & Hướng phát triển</h1>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="fade-in">
+                <div >
                     <h2 class="text-3xl font-semibold mb-8">🎉 Thành tựu đạt được</h2>
                     <ul class="space-y-4 text-xl">
                         <li class="flex items-center">
@@ -618,7 +610,7 @@
                     </ul>
                 </div>
                 
-                <div class="fade-in">
+                <div >
                     <h2 class="text-3xl font-semibold mb-8">🚀 Bước tiếp theo</h2>
                     <ul class="space-y-4 text-xl">
                         <li class="flex items-center">
@@ -688,19 +680,7 @@
             section.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Fade in animation
-        function handleFadeIn() {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            const windowHeight = window.innerHeight;
-            
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                
-                if (elementTop < windowHeight - 100) {
-                    element.classList.add('visible');
-                }
-            });
-        }
+
 
         // Initialize charts
         function initCharts() {
@@ -794,18 +774,11 @@
         window.addEventListener('scroll', () => {
             updateScrollProgress();
             updateNavDots();
-            handleFadeIn();
         });
 
         window.addEventListener('load', () => {
-            handleFadeIn();
             setTimeout(initCharts, 1000);
         });
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            handleFadeIn();
-        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979ac1df47371fbc',t:'MTc1Njk2MDI4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979add5633101fbc',t:'MTc1Njk2MTQxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
